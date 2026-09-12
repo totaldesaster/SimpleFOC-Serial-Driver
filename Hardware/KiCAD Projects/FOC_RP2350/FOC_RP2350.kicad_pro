@@ -50,7 +50,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.3
+          "min_clearance": 0.0
         }
       },
       "diff_pair_dimensions": [
@@ -60,7 +60,36 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "copper_edge_clearance|121850000|116750000|3bf6a0b8-ab51-4b04-b0e3-96b8df6f4d88|9fdd4e3b-7df0-4ab2-929f-3ec9bd1a4713",
+          ""
+        ],
+        [
+          "copper_edge_clearance|121850000|83250000|3bf6a0b8-ab51-4b04-b0e3-96b8df6f4d88|de0626c9-a947-4885-8d54-72ae3c86172d",
+          ""
+        ],
+        [
+          "copper_edge_clearance|175050000|119850000|3bf6a0b8-ab51-4b04-b0e3-96b8df6f4d88|8bf864db-0cf4-4355-8a39-54dbd60914af",
+          ""
+        ],
+        [
+          "copper_edge_clearance|175050000|80150000|3bf6a0b8-ab51-4b04-b0e3-96b8df6f4d88|99f11e09-891f-4095-8eee-32bf01f2dac5",
+          ""
+        ],
+        [
+          "courtyards_overlap|177925000|81351061|b5717de0-4302-4464-bcdd-6789f5736d93|c72d8c1c-b7a0-4bce-9d34-517d77e0a428",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|125260000|92150000|69c62e0d-a0e6-4a25-b9a7-8ede0cd2a435|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "track_dangling|157250000|103000000|69590c04-0e9a-433a-ae25-d8df41ba0fbc|00000000-0000-0000-0000-000000000000",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -645,7 +674,7 @@
         "uuid": "3b7d4c2a-69db-43be-a9b3-4d130649ee68"
       }
     ],
-    "used_designators": "U101",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [

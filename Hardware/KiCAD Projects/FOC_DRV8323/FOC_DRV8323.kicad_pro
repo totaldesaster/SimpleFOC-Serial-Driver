@@ -60,7 +60,32 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "copper_edge_clearance|121850000|116750000|4661276e-e226-4e3b-9838-044645e4aeed|c5654466-e127-42cf-9a3c-71cb0989041c",
+          ""
+        ],
+        [
+          "copper_edge_clearance|121850000|83250000|4661276e-e226-4e3b-9838-044645e4aeed|ffc6281a-4c70-4493-b55f-7f21dbb165a6",
+          ""
+        ],
+        [
+          "copper_edge_clearance|175050000|80150000|4661276e-e226-4e3b-9838-044645e4aeed|0a82dee1-7bc3-4bd9-b675-b4ec4f5306f9",
+          ""
+        ],
+        [
+          "copper_edge_clearance|178150000|116750000|4661276e-e226-4e3b-9838-044645e4aeed|fe05cd4c-7934-4685-aa44-97c027b57d8b",
+          ""
+        ],
+        [
+          "courtyards_overlap|128105000|81870900|3a39bc30-9b08-45eb-bfff-9ec7df22937d|726dab6b-e804-4ba4-8bd0-454d01935c7e",
+          ""
+        ],
+        [
+          "courtyards_overlap|171895000|84615979|5836ceab-8b9d-4107-8b02-7c8f82542295|6932838e-7968-43dc-9ae5-f23b23e7cc07",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -645,7 +670,7 @@
         "uuid": "09af15d7-4d4b-4eb7-a13d-9be8adaa905e"
       }
     ],
-    "used_designators": "R102-105",
+    "used_designators": "R102-106,TH101,#PWR103-108,H101-104",
     "variants": []
   },
   "sheets": [

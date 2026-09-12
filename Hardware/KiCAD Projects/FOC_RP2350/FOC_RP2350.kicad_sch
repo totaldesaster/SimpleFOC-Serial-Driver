@@ -83,14 +83,6 @@
 		(color 0 0 0 0)
 		(uuid "187557d2-a8f1-4ac3-9636-7877fba45e39")
 	)
-	(no_connect
-		(at 109.22 146.05)
-		(uuid "650889f6-5df0-4ad5-9659-159f7bd03604")
-	)
-	(no_connect
-		(at 90.17 45.72)
-		(uuid "84155a0f-7637-4c2a-97fa-674e49e1cbca")
-	)
 	(wire
 		(pts
 			(xy 50.8 45.72) (xy 50.8 71.12)
@@ -130,6 +122,16 @@
 			(type default)
 		)
 		(uuid "0d6e53bd-bee1-4a60-9c40-752b24481b07")
+	)
+	(wire
+		(pts
+			(xy 83.82 144.78) (xy 109.22 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e609be6-9743-4773-bce3-e6cbb225ca59")
 	)
 	(wire
 		(pts
@@ -353,6 +355,16 @@
 	)
 	(wire
 		(pts
+			(xy 83.82 149.86) (xy 85.09 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87c87ca6-6b6a-4815-9d5b-c8442e0b8c90")
+	)
+	(wire
+		(pts
 			(xy 232.41 45.72) (xy 232.41 71.12)
 		)
 		(stroke
@@ -523,6 +535,16 @@
 	)
 	(wire
 		(pts
+			(xy 83.82 147.32) (xy 85.09 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c661753d-ed87-4c69-845c-7627a7e19a14")
+	)
+	(wire
+		(pts
 			(xy 83.82 124.46) (xy 109.22 124.46)
 		)
 		(stroke
@@ -570,6 +592,16 @@
 			(type default)
 		)
 		(uuid "de17f69a-9a0a-4d4e-9998-9628808c3e0d")
+	)
+	(wire
+		(pts
+			(xy 83.82 152.4) (xy 85.09 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e0c6292a-50ff-4137-9d69-1a2f00795355")
 	)
 	(wire
 		(pts
@@ -691,6 +723,16 @@
 		)
 		(uuid "0f4d97fe-d929-4c90-b832-dd486c126b56")
 	)
+	(label "SPI1_TX"
+		(at 85.09 149.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1101e1a3-237b-4c73-85a8-d9d60e94bc80")
+	)
 	(label "SPI1_SCK"
 		(at 148.59 67.31 90)
 		(effects
@@ -730,6 +772,16 @@
 			(justify left bottom)
 		)
 		(uuid "32bf9ff4-bc0b-442c-bb61-f12ca2161561")
+	)
+	(label "SPI1_SCK"
+		(at 85.09 147.32 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "37e503ed-c541-4b7d-8a10-267144ea4505")
 	)
 	(label "PWM9A"
 		(at 179.07 67.31 90)
@@ -881,6 +933,16 @@
 		)
 		(uuid "d3c473eb-dde3-4890-a195-fd78972d3940")
 	)
+	(label "SPI1_RX"
+		(at 85.09 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d9652c05-aa57-45d5-9af4-cb5a2425c81e")
+	)
 	(label "UART1_TX_External"
 		(at 121.92 67.31 90)
 		(effects
@@ -943,7 +1005,7 @@
 	)
 	(sheet
 		(at 109.22 71.12)
-		(size 152.4 82.55)
+		(size 152.4 86.36)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -969,7 +1031,7 @@
 			)
 		)
 		(property "Sheetfile" "untitled.kicad_sch"
-			(at 109.22 154.2546 0)
+			(at 109.22 158.0646 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -1230,7 +1292,7 @@
 			)
 		)
 		(pin "GPIO32" input
-			(at 109.22 146.05 180)
+			(at 109.22 144.78 180)
 			(uuid "311fcc2e-4954-4e56-93b2-c0a601dd6f9a")
 			(effects
 				(font
@@ -1369,26 +1431,6 @@
 				(justify left)
 			)
 		)
-		(pin "GPIO14" input
-			(at 143.51 71.12 90)
-			(uuid "ca28dd93-f658-4762-90dc-5f34e2a80771")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "GPIO27" input
-			(at 227.33 71.12 90)
-			(uuid "e13c566b-df5c-4b44-8af1-d03bcbfa4249")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(pin "GPIO15" input
 			(at 158.75 71.12 90)
 			(uuid "cf995394-abbc-4e41-ab51-42937b5a4dbe")
@@ -1489,6 +1531,26 @@
 				(justify right)
 			)
 		)
+		(pin "GPIO14" input
+			(at 227.33 71.12 90)
+			(uuid "40a90a9f-1f80-4729-9fa9-880a4c5c88b1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "GPIO27" input
+			(at 143.51 71.12 90)
+			(uuid "3f89a504-3886-4040-81f8-5952114923ff")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "FOC_RP2350"
 				(path "/3b7d4c2a-69db-43be-a9b3-4d130649ee68"
@@ -1578,16 +1640,6 @@
 		(pin "RS485_Z" input
 			(at 53.34 45.72 270)
 			(uuid "2ae63edd-d81b-4272-bf45-e03059edb011")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "5V_Enable" input
-			(at 227.33 45.72 270)
-			(uuid "937815c4-1470-47d7-a779-2ad1ed5405ec")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1925,16 +1977,6 @@
 				(justify left)
 			)
 		)
-		(pin "5V" input
-			(at 90.17 45.72 270)
-			(uuid "f0aecf28-d3bc-48de-a7cc-8224bda6b977")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "Shield_Res103" input
 			(at 148.59 45.72 270)
 			(uuid "90720bc3-1b5a-48d3-b46e-db77d1958214")
@@ -1955,6 +1997,26 @@
 				(justify left)
 			)
 		)
+		(pin "Shield_Res112" input
+			(at 227.33 45.72 270)
+			(uuid "00bd6bc5-f3f9-458c-a3c3-4b6b4b752660")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "5V" input
+			(at 101.6 45.72 270)
+			(uuid "e267cdee-afa5-4532-9bdb-4432f7d3e02d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
 		(instances
 			(project "FOC_RP2350"
 				(path "/3b7d4c2a-69db-43be-a9b3-4d130649ee68"
@@ -1965,7 +2027,7 @@
 	)
 	(sheet
 		(at 33.02 71.12)
-		(size 50.8 82.55)
+		(size 50.8 86.36)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -1991,7 +2053,7 @@
 			)
 		)
 		(property "Sheetfile" "comms.kicad_sch"
-			(at 33.02 154.2546 0)
+			(at 33.02 158.0646 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2174,6 +2236,46 @@
 		(pin "ComBus_Txen" input
 			(at 83.82 104.14 0)
 			(uuid "e14e655b-aa27-400a-97da-a16c9280b45c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "Accel_CS" input
+			(at 83.82 144.78 0)
+			(uuid "6dd31487-e57b-425d-973b-295063a2e18f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "Accel_SCL" input
+			(at 83.82 147.32 0)
+			(uuid "52043869-4833-4c68-b0d8-10c01edf8fc4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "Accel_SDI" input
+			(at 83.82 149.86 0)
+			(uuid "9fc5f905-85ee-44ce-8a8b-25d8c6263d16")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "Accel_SDO" input
+			(at 83.82 152.4 0)
+			(uuid "406448b3-d65b-4d90-8fb8-b3ad5a6bb37e")
 			(effects
 				(font
 					(size 1.27 1.27)
