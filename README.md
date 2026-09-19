@@ -3,6 +3,6 @@ Advanced dual BLDC driver based on the RP2350 and DRV8323 ICs, designed to be co
 
 The controller board is designed as a generic base unit to allow use with different actor shields. It can currently be used with MKS Dual FOC boards (tested with v3.2) and the custom driver board from this repository.
 
-<img width="1059" height="687" alt="Untitled" src="https://github.com/user-attachments/assets/2171b6b5-b6cb-4b40-ae4f-6b96d483c2cf" />
+<img width="1310" height="805" alt="Screenshot 2026-09-19 211833" src="https://github.com/user-attachments/assets/1225732d-5c95-4351-a9f9-31afb10a5321" />
 
 Work in Progress, will be updated as more information and tests become available.
