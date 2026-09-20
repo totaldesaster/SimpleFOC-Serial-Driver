@@ -1,113 +1,158 @@
 #include "MotorBoard_DRV8323.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ControlBoard_RP2354.cpp
-// Functions for hardware on the motor driver board
+// DRV8323S SPI driver definition and setup
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Setup
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+DRV8323S_SPI::DRV8323S_SPI(uint8_t sclk,uint8_t sdi,uint8_t sdo,uint8_t cs) : _sclk(sclk),_sdi(sdi),_sdo(sdo),_cs(cs) { }
 
-MotorBoard::MotorBoard() :  drv0(36, 35, 34, 20),                               // 3-PWM Driver on GPIO36 / 35 / 34 (Enable on 20)
-                            drv1(39, 38, 37, 18),                               // 3-PWM Driver on GPIO39 / 38 / 37 (Enable on 18)
-                            cs0(0.01f, 40.0f, 44, 45),                          // Current sense on GPIO44 & 45 (Phase C virtual) with 0.01 Ohm resistor and 40 gain
-                            cs1(0.01f, 40.0f, 41, 42),                          // Current sense on GPIO41 & 42 (Phase C virtual) with 0.01 Ohm resistor and 40 gain
-                            spi(SPI1)                                           // SPI bus for diagnostics
-{}                                                                              // Constructor is empty
-
-void MotorBoard::begin(float supply, float limit) {                             // Initialisation function
-  drv0.init();                                                                  // SimpleFOC: Driver 0
-  drv1.init();                                                                  // SimpleFOC: Driver 1
-  cs0.init();                                                                   // SimpleFOC: Current Sense 0
-  cs1.init();                                                                   // SimpleFOC: Current Sense 1
-  pinMode(SPI_SDO, OUTPUT);                                                     // SPI Tx
-  pinMode(SPI_SDI, INPUT);                                                      // SPI Rx
-  pinMode(SPI_SCK, OUTPUT);                                                     // SPI Clock
-  digitalWrite(SPI_SCK, LOW);                                                   // Drive clock low initially
-  digitalWrite(SPI_SDO, LOW);                                                   // Drive Tx low initially
-  accelSetup();                                                                 // Slave Config: Accelerometer
-  drv0.voltage_power_supply = supply;                                           // Voltage, Power Supply
-  drv1.voltage_power_supply = supply;                                           // Voltage, Power Supply
-  drv0.voltage_limit = limit;                                                   // Voltage, Driver Hard Limit
-  drv1.voltage_limit = limit;                                                   // Voltage, Driver Hard Limit
+void DRV8323S_SPI::begin() {                                                  // SPI driver setup function
+  pinMode(_sclk, OUTPUT);                                                     // Pin config: DRV8323 clock in, MCU clock out
+  pinMode(_sdi, OUTPUT);                                                      // Pin config: DRV8323 data in, MCU data out
+  pinMode(_sdo, INPUT_PULLUP);                                                // Pin config: DRV8323 data out, MCU data in
+  pinMode(_cs, OUTPUT);                                                       // Pin config: Chip select (active low)
+  digitalWrite(_sclk, LOW);                                                   // Pin state: low, DRV8323 requires SCLK LOW when nSCS changes
+  digitalWrite(_sdi, LOW);                                                    // Pin state: low, indicates zero
+  digitalWrite(_cs, HIGH);                                                    // Pin state: high, deselect chip (idle)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Bit-Banging SPI function because somebody didn't read the datasheet properly ;)
+// High-Level SPI Control
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-uint8_t MotorBoard::spiTransfer(uint8_t tx) {                                   // Transmit one byte and read the returned data
-  uint8_t rx = 0;                                                               // Received Data
-  for (int i = 7; i >= 0; --i) {                                                // Bit-Banging Loop:
-    digitalWrite(SPI_SDO, (tx >> i) & 1);                                       //    1) Set Tx signal for next transfer
-    digitalWrite(SPI_SCK, HIGH);                                                //    2) Rising edge on clock to start sample
-    if (digitalRead(SPI_SDI)) rx |= (1 << i);                                   //    3) Read Rx signal
-    digitalWrite(SPI_SCK, LOW); }                                               //    4) Falling edge on clock to reset
-  return rx;                                                                    // Return the sampled byte
+uint16_t DRV8323S_SPI::writeRegister(uint8_t reg, uint16_t data) {            // Write a register on the device
+  uint16_t tx = ((uint16_t)(reg & 0x0F) << 11) | (data & 0x07FF);             // B15 = 0 (write), B14:11 = register address, B10:0 = register data
+  select();                                                                   // Select chip (and ensure it's enabled)
+  uint16_t rx = transfer16(tx);                                               // Send data, register response
+  deselect();                                                                 // Deselect chip (and disable if it was previously disabled)
+  return rx;                                                                  // Return received data
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Accelerometer IC low-level control
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-uint8_t MotorBoard::readAccelRegister(uint8_t reg) {                            // Read register of the LIS12DW12 Accelerometer Chip
-    uint8_t value;                                                              // Variable to store the register value
-    digitalWrite(SPI_CS_ACCEL, LOW);                                            // Drive chip select low
-    spiTransfer(reg | 0b10000000);                                              // Transfer read command and register address
-    value = spiTransfer(0b00000000);                                            // Empty transfer (accelerometer returns data)
-    digitalWrite(SPI_CS_ACCEL, HIGH);                                           // Release chip select
-    return value;                                                               // Return the received data from the accelerometer
-}
-
-void MotorBoard::readAccelRegs(uint8_t reg, uint8_t* buffer, size_t length) {   // Read multiple registers of the LIS12DW12 Accelerometer Chip
-    digitalWrite(SPI_CS_ACCEL, LOW);                                            // Drive chip select low
-    spiTransfer(reg | 0b10000000);                                              // Transfer read command and start register address
-    for (size_t i = 0; i < length; i++) {                                       // For all elements in the length specified:
-        buffer[i] = spiTransfer(0b00000000); }                                  // - Transfer empty data, read the return to buffer
-}
-
-void MotorBoard::writeAccelRegister(uint8_t reg, uint8_t value) {               // Write register of the LIS12DW12 Accelerometer Chip
-    digitalWrite(SPI_CS_ACCEL, LOW);                                            // Drive chip select low
-    spiTransfer(reg & 0b01111111);                                              // Transfer write command and register address
-    spiTransfer(value);                                                         // Transfer data to be written
-    digitalWrite(SPI_CS_ACCEL, HIGH);                                           // Release chip select
-}
-
-bool MotorBoard::accelSetup() {                                                 // Configure accelerometer IC
-  uint8_t whoAmI = readAccelRegister(REG_WHO_AM_I);                             // Read who am I value to verify chip
-  if (whoAmI != WHO_AM_I_VALUE) { return false; }                               // Abort if wrong chip
-  writeAccelRegister(REG_CTRL1, 0b01010100);                                    // Config register 1: 100Hz, High Performance Mode
-  writeAccelRegister(REG_CTRL2, 0b00001100);                                    // Config register 2: Block Data Update, Auto-Increment
-  writeAccelRegister(REG_CTRL6, 0b10000100);                                    // Config register 6: 1/10 cutoff, 2G fullscale, low noise
-  return true;                                                                  // Return config OK
+uint16_t DRV8323S_SPI::readRegister(uint8_t reg) {                            // Read a register on the device
+  uint16_t tx = 0x8000 | ((uint16_t)(reg & 0x0F) << 11);                      // B15 = 1 (read), B14:11  = register address, B10:0 = don't care (device returns data)
+  select();                                                                   // Select chip (and ensure it's enabled)
+  uint16_t rx = transfer16(tx);                                               // Send data, register response
+  deselect();                                                                 // Deselect chip (and disable if it was previously disabled)
+  return rx;                                                                  // Return received data
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Accelerometer IC high-level control
+// Low-Level SPI Control
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-uint8_t MotorBoard::readTemperature() {                                         // Read temperature from the LIS12DW12 Accelerometer Chip
-  int8_t raw = static_cast<int8_t>(readAccelRegister(REG_OUT_T));               // Get temperature register and cast to signed integer
-  return 25 + raw;                                                              // Add zero offset (sensor 0 value is at 25C ambient)                            
-}
-
-Vector MotorBoard::readAcceleration(){                                          // Read acceleration from the LIS12DW12 Accelerometer Chip
-    uint8_t data[6];                                                            // Storage for 6 registers (XYZ)
-    readAccelRegs(REG_OUT_X_L, data, 6);                                        // Read Acceleration registers, 6 starting at X Low
-    int16_t rawX = (static_cast<uint16_t>(data[1]) << 8) | data[0];             // Get values from sensor, merging two registers to 16 bit
-    int16_t rawY = (static_cast<uint16_t>(data[3]) << 8) | data[2];             // Get values from sensor, merging two registers to 16 bit
-    int16_t rawZ = (static_cast<uint16_t>(data[5]) << 8) | data[4];             // Get values from sensor, merging two registers to 16 bit
-    rawX >>= 2;                                                                 // Shift two bits to the right (acceleration is 14 bit)
-    rawY >>= 2;                                                                 // Shift two bits to the right (acceleration is 14 bit)
-    rawZ >>= 2;                                                                 // Shift two bits to the right (acceleration is 14 bit)
-    Vector result;                                                              // Struct to store acceleration data
-    result.x = static_cast<float>(rawX) * 0.000244f;                            // Calculate acceleration, factoring in sensitivity
-    result.y = static_cast<float>(rawY) * 0.000244f;                            // Calculate acceleration, factoring in sensitivity
-    result.z = static_cast<float>(rawZ) * 0.000244f;                            // Calculate acceleration, factoring in sensitivity
-    return result;                                                              // Return acceleration in G
+void DRV8323S_SPI::select() {                                                 // Function to select the chip
+  digitalWrite(_sclk, LOW);                                                   // SCLK must already be LOW.
+  digitalWrite(_cs, LOW);                                                     // nSCS setup time >= 50 ns.
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Gate Driver IC low-level control
+
+void DRV8323S_SPI::deselect() {                                               // Function to deselect the chip
+  digitalWrite(_sclk, LOW);                                                   // SCLK must be LOW when nSCS goes HIGH.
+  digitalWrite(_cs, HIGH);                                                    // Datasheet requires nSCS HIGH for >= 400 ns between SPI words.      
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+uint16_t DRV8323S_SPI::transfer16(uint16_t tx) {                              // 16-Bit bit-banged SPI transfer function
+  uint16_t rx = 0;                                                            // Received data
+  for (int8_t bit = 15; bit >= 0; bit--) {                                    // Loop through the 16 bits:
+    digitalWrite(_sdi, (tx >> bit) & 0x01);                                   // - Set SDI while SCLK is LOW. The DRV8323 captures SDI on the FALLING edge.
+    digitalWrite(_sclk, HIGH);                                                // - Rising edge: DRV8323 propagates SDO here.
+    if (digitalRead(_sdo)) { rx |= (uint16_t)1 << bit; }                      // - SDO is now valid. Capture data.
+    digitalWrite(_sclk, LOW);                                                 // - Falling edge: DRV8323 captures SDI here.
+  } return rx;                                                                // Return the received data.
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Motor Board definition and setup
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+MotorBoard::MotorBoard() : drv0(PINCONF_DRV0),
+                           drv1(PINCONF_DRV1),
+                           cs0(PINCONF_CS0),
+                           cs1(PINCONF_CS1),
+                           drvspi0(PINCONF_SPI0),
+                           drvspi1(PINCONF_SPI1)
+{}
+
+void MotorBoard::begin(float supply, float limit) {                           // Motor board initialisation function
+  drv0.init();                                                                // SimpleFOC: Driver 0
+  drv1.init();                                                                // SimpleFOC: Driver 1
+  cs0.init();                                                                 // SimpleFOC: Current Sense 0
+  cs1.init();                                                                 // SimpleFOC: Current Sense 1
+  drv0.voltage_power_supply = supply;                                         // SimpleFOC: Voltage, Power Supply
+  drv1.voltage_power_supply = supply;                                         // SimpleFOC: Voltage, Power Supply
+  drv0.voltage_limit = limit;                                                 // SimpleFOC: Voltage, Driver Hard Limit
+  drv1.voltage_limit = limit;                                                 // SimpleFOC: Voltage, Driver Hard Limit
+  pinMode(SPI_CS_ACCEL, INPUT_PULLUP);                                        // Pin: disable accelerometer SPI
+  pinMode(DRV_ENA0, OUTPUT);                                                  // Pin: drive 0 enable
+  pinMode(DRV_ENA1, OUTPUT);                                                  // Pin: drive 1 enable
+  pinMode(DRV_CAL, OUTPUT);                                                   // Pin: drive offset calibration
+  drvspi0.begin();                                                            // SPI: configure driver for drv0
+  drvspi1.begin();                                                            // SPI: configure driver for drv1
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Brake Chopper control
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MotorBoard::setBrakeDuty(uint8_t duty, float supplyVolts) {              // Set normalized brake power (255 = max continuous power)
+    float targetPower = (static_cast<float>(duty) / 255.0f) * MAX_POWER;      // Target power, proportional to requested duty
+    float pwmFraction = targetPower * BRAKE_R / (supplyVolts * supplyVolts);  // Power = PWM * U^2 / R
+    float pwm = pwmFraction * 255.0f;                                         // Find target PWM value
+    pwm = constrain(pwm, 0.0f, 255.0f);                                       // Constrain to 0...255 range
+    analogWrite(BRAKECHOP, static_cast<uint8_t>(pwm + 0.5f));                 // Write PWM
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Auxiliary Motor Driver Functions
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MotorBoard::calibrateCSA() {                                             // Current Sense Amplifier calibration function
+  pinMode(DRV_CAL, OUTPUT);                                                   // Set CAL pin to output
+  digitalWrite(DRV_CAL, HIGH);                                                // Send calibration command
+  delay(1);                                                                   // Give the driver time to perform calibration
+  digitalWrite(DRV_CAL, LOW);                                                 // Reset calibration command
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MotorBoard::enableDrives() {                                             // Motor drivers enable command
+  digitalWrite(DRV_ENA1, HIGH);                                               // Enable Drive 1
+  digitalWrite(DRV_ENA0, HIGH);                                               // Enable Drive 0
+  delay(1);                                                                   // Allow drives to wake up (tWAKE = 1ms)
+  drvspi0.writeRegister(0x02, 0b00000100000);                                 // SPI: Driver Control Register: set to 3x PWM Mode
+  drvspi0.writeRegister(0x05, 0b00101010100);                                 // SPI: Overcurrent Protection Register: set reduced VDS overcurrent treshold
+  drvspi0.writeRegister(0x06, 0b01001000000);                                 // SPI: Current Sense Amplifier Register: set reduced gain and overcurrent treshold
+  drvspi1.writeRegister(0x02, 0b00000100000);                                 // SPI: Driver Control Register: set to 3x PWM Mode
+  drvspi1.writeRegister(0x05, 0b00101010100);                                 // SPI: Overcurrent Protection Register: set reduced VDS overcurrent treshold
+  drvspi1.writeRegister(0x06, 0b01001000000);                                 // SPI: Current Sense Amplifier Register: set reduced gain and overcurrent treshold
+  calibrateCSA();                                                             // Calibrate current sense amplifiers
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void MotorBoard::disableDrives() {                                            // Motor drivers disable command
+  digitalWrite(DRV_ENA1, LOW);                                                // Disable Drive 1
+  digitalWrite(DRV_ENA0, LOW);                                                // Disable Drive 0
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+uint64_t MotorBoard::getFaults() {                                            // Get faults from drivers. 0 Indicates no fault.
+  uint16_t drv0_fault1; uint16_t drv0_fault2;                                 // Two fault registers on Driver 0
+  uint16_t drv1_fault1; uint16_t drv1_fault2;                                 // Two fault registers on Driver 1
+  if ( digitalRead(DRV_ENA0) && !digitalRead(DRV_FAULT0)) {                   // If driver 0 is enabled and reporting a fault:
+    drv0_fault1 = drvspi0.readRegister(0x00);                                 // - Read fault register 1
+    drv0_fault2 = drvspi0.readRegister(0x01); }                               // - Read fault register 2
+  if ( digitalRead(DRV_ENA1) && !digitalRead(DRV_FAULT1)) {                   // If driver 1 is enabled and reporting a fault:
+    drv1_fault1 = drvspi1.readRegister(0x00);                                 // - Read fault register 1
+    drv1_fault2 = drvspi1.readRegister(0x01); }                               // - Read fault register 2
+  return (static_cast<uint64_t>(drv0_fault1) << 48) |                         // Assemble four fault registers to 64-Bit data packet
+         (static_cast<uint64_t>(drv0_fault2) << 32) |
+         (static_cast<uint64_t>(drv1_fault1) << 16) |
+         static_cast<uint64_t>(drv1_fault2);
+}

@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#define CB_VERSION1
+
 // Configurations of serial chip
 #define BUSIDLE           0,0,0,0                           // No Tx/Rx
 #define TERM              0,0,0,1                           // No Tx/Rx, with 120 Ohm Termination
@@ -23,7 +25,7 @@ class ControlBoard {
     uint8_t readConfsw();                                   // Digital Inputs: read config select pins
     void setComLED(int state);                              // Digital Output: "COM" LED
     void setDrvLED(int state);                              // Digital Output: "DRV" LED
-    void set5VEna(int state);                               // Digital Output: 5V Regulator Enable
+    void setFailLED(int state);                             // Digital Output: "FAIL" LED
     SerialUART& ttlUART;                                    // Serial Port: TTL UART on screw terminals
     SerialUART& comchipUART;                                // Serial Port: Differential UART on THVD1424
     void comchipConfig(int txen,int rxen,int term,int hf);  // Serial Port: Set configuration for THVD1424
@@ -48,6 +50,6 @@ class ControlBoard {
     static constexpr int INPUT_VOLT   = 47;                 // Voltage Divider
     static constexpr int LED_DRV      = 23;                 // "DRV" LED
     static constexpr int LED_COM      = 25;                 // "COM" LED
-    static constexpr int VREG_ENA     = 27;                 // 5 Volt Regulator Enable
+    static constexpr int LED_FAIL     = 99;
     static constexpr int CONFSW[]     = {28,29,30,31};      // Config pins
 };

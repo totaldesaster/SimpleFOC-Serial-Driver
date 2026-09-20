@@ -1,12 +1,7 @@
 #include "ControlBoard_RP2354.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ControlBoard_RP2354.cpp
-// Functions for hardware on the main control board
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Setup: assign two UARTs to TTL & RS-485 in the constructor, set up pins and serial ports in begin()
+// Control Board definition and setup
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ControlBoard::ControlBoard() :  ttlUART(Serial2),                               // Assign UART1 to TTL UART
@@ -17,7 +12,6 @@ void ControlBoard::begin() {                                                    
   for (int i = 0; i < 4; i++) { pinMode(CONFSW[i], INPUT); }                    // Configure conf sw inputs
   pinMode(LED_DRV, OUTPUT);                                                     // Configure drive LED control
   pinMode(LED_COM, OUTPUT);                                                     // Configure communication LED control
-  pinMode(VREG_ENA, OUTPUT);                                                    // Configure voltage regulator control
   pinMode(COMBUS_TXEN, OUTPUT);                                                 // Configure transceiver Tx Enable
   pinMode(COMBUS_RXEN, OUTPUT);                                                 // Configure transceiver Rx Enable
   pinMode(COMBUS_TERM, OUTPUT);                                                 // Configure transceiver Termination Resistor
@@ -29,12 +23,12 @@ void ControlBoard::begin() {                                                    
   ttlUART.begin(115200);                                                        // Begin TTL UART
   comchipUART.setRX(COMBUS_RX);                                                 // Configure RS422/RS485 UART Pins
   comchipUART.setTX(COMBUS_TX);                                                 // Configure RS422/RS485 UART Pins
-  comchipUART.begin(10000000);                                                   // Begin RS422/RS485 UART
+  comchipUART.begin(10000000);                                                  // Begin RS422/RS485 UART
   Serial.begin(115200);                                                         // Begin USB Serial
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Sets the configuration of RS-485/RS-422 Transceiver Chip
+// Low-Level Communication Chip control
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ControlBoard::comchipConfig(int txen, int rxen, int term, int halfd) {
@@ -45,7 +39,7 @@ void ControlBoard::comchipConfig(int txen, int rxen, int term, int halfd) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Read input pins and evaluate them into a usable data
+// Input evaluation functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 float ControlBoard::readCurrent() {                                             // Read supply current
@@ -74,9 +68,9 @@ uint8_t ControlBoard::readConfsw() {                                            
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Set output pins
+// Output setting functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ControlBoard::setComLED(int state) { digitalWrite(LED_COM, state); }       // Set state of the communication LED
-void ControlBoard::setDrvLED(int state) { digitalWrite(LED_DRV, state); }       // Set state of the drive LED
-void ControlBoard::set5VEna(int state) { digitalWrite(VREG_ENA, state); }       // Set state of the 5v regulator
+void ControlBoard::setComLED(int state)   { digitalWrite(LED_COM, state); }     // Set state of the communication LED
+void ControlBoard::setDrvLED(int state)   { digitalWrite(LED_DRV, state); }     // Set state of the drive LED
+void ControlBoard::setFailLED(int state)  { digitalWrite(LED_FAIL, state); }    // Set state of the drive LED
