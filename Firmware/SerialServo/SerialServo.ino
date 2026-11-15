@@ -1,24 +1,34 @@
 #include "ControlBoard_RP2354.h"
 #include "MotorBoard_DRV8323.h"
-#include "SerialDriveMotor.h"
+#include "ServoAxis.h"
+
+#if !defined(PICO_RP2350)                                               // Check for correct MCU family
+  #error "Wrong MCU! Select RP2350B/RP2354B."                           // Error on incorrect family
+#elif !defined(PICO_RP2350A) || PICO_RP2350A                            // Check for correct (B) package
+  #error "Wrong package! Select RP2350B (48 GPIO)."                     // Error on incorrect package
+#endif
 
 // Configuration & tuning for DFRobot FIT1035
 ControlBoard cb;                                                        // Control Board hardware class
 MotorBoard mb;                                                          // Motor Board hardware class
-BLDCMotor m0 = BLDCMotor(7, 10.7, 110, 0.0053);
-BLDCMotor m1 = BLDCMotor(7, 10.7, 110, 0.0053);
-MagneticSensorI2C enc0 = MagneticSensorI2C( AS5600_I2C );
-MagneticSensorI2C enc1 = MagneticSensorI2C( AS5600_I2C );
-SerialDriveMotor axis0 (m0, enc0, mb.drv0, Wire);
-SerialDriveMotor axis1 (m1, enc1, mb.drv1, Wire1);
-repeating_timer_t focTimer;
+BLDCMotor m0 = BLDCMotor(7, 10.7, 110, 0.0053);                         // DFRobot FIT1035
+BLDCMotor m1 = BLDCMotor(7, 10.7, 110, 0.0053);                         // DFRobot FIT1035
+MagneticSensorI2C enc0 = MagneticSensorI2C( AS5600_I2C );               // DFRobot FIT1035
+MagneticSensorI2C enc1 = MagneticSensorI2C( AS5600_I2C );               // DFRobot FIT1035
+ServoAxis axis0 (m0, enc0, mb.drv0, Wire);                              // Init servo axis 0
+ServoAxis axis1 (m1, enc1, mb.drv1, Wire1);                             // Init servo axis 1
+
+repeating_timer_t focTimer;                                             // Timer for SimpleFOC task
+bool BLDC0 = true;                                                      // Config: enable BLDC 0
+bool BLDC1 = false;                                                     // Config: enable BLDC 1
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RTOS Tasks
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool focTimerCB(repeating_timer_t *timer) {                             // Timer-Controlled Hard Realtime motion control loop
-  axis0.loop();                                                         // Run axis loop
+  if (BLDC0 == true) { axis0.loop(); }                                  // Run axis loop
+  if (BLDC1 == true) { axis1.loop(); }                                  // Run axis loop
   return true;                                                          // Return "keep repeating" to controlling timer
 }
 
@@ -35,36 +45,36 @@ void processCommand(Stream& ser) {                                      // Comma
 
   if (command == "ENABLE") { mb.enableDrives(); }                       // Motor Driver Enable command
 
-  if (command == "DISABLE") { mb.disableDrives(); }                     // Motor Driver Disable (coast) command
+  else if (command == "DISABLE") { mb.disableDrives(); }                // Motor Driver Disable (coast) command
 
-  if (command == "T") {                                                 // Torque (current) command
+  else if (command == "C") {                                            // ODrive ASCII Protocol: current command
     int p1 = received.indexOf(' ');                                     // Find position of first space
     int p2 = received.indexOf(' ', p1 + 1);                             // Find position of second space
     int axis = received.substring(p1 + 1, p2).toInt();                  // Substring 1 is axis number
     float current = received.substring(p2 + 1).toFloat();               // Substring 2 is torque target
     if (axis == 0) { axis0.setTrkTarget(current); }                     // Apply command to the relevant axis
-    if (axis == 1) { axis0.setTrkTarget(current); }
+    if (axis == 1) { axis1.setTrkTarget(current); }
   }
 
-  if (command == "V") {                                                 // Velocity command
+  else if (command == "V") {                                            // ODrive ASCII Protocol: velocity command
     int p1 = received.indexOf(' ');                                     // Find position of first space
     int p2 = received.indexOf(' ', p1 + 1);                             // Find position of second space
     int axis = received.substring(p1 + 1, p2).toInt();                  // Substring 1 is axis number
     float velocity = received.substring(p2 + 1).toFloat();              // Substring 2 is velocity target
     if (axis == 0) { axis0.setVelTarget(velocity); }                    // Apply command to the relevant axis
-    if (axis == 1) { axis0.setVelTarget(velocity); }
+    if (axis == 1) { axis1.setVelTarget(velocity); }
   }
 
-  if (command == "P") {                                                 // Position command
+  else if (command == "Q") {                                            // ODrive ASCII Protocol: direct position command
     int p1 = received.indexOf(' ');                                     // Find position of first space
     int p2 = received.indexOf(' ', p1 + 1);                             // Find position of second space
     int axis = received.substring(p1 + 1, p2).toInt();                  // Substring 1 is axis number
     float position = received.substring(p2 + 1).toFloat();              // Substring 2 is position target
     if (axis == 0) { axis0.setPosTarget(position); }                    // Apply command to the relevant axis
-    if (axis == 1) { axis0.setPosTarget(position); }
+    if (axis == 1) { axis1.setPosTarget(position); }
   }
 
-  if (command == "C") {                                                 // Cascaded position command
+  else if (command == "P") {                                            // ODrive ASCII Protocol: cascaded position command
     int p1 = received.indexOf(' ');                                     // Find position of first space
     int p2 = received.indexOf(' ', p1 + 1);                             // Find position of second space
     int p3 = received.indexOf(' ', p2 + 1);                             // Find position of third space
@@ -74,30 +84,30 @@ void processCommand(Stream& ser) {                                      // Comma
     float vel_ff = received.substring(p3 + 1).toFloat();                // Substring 3 is velocity feed-forward
     float trk_ff = received.substring(p4 + 1).toFloat();                // Substring 4 is torque feed-forward
     if (axis == 0) { axis0.setCascadeTargets(position,vel_ff,trk_ff); } // Apply command to the relevant axis
-    if (axis == 1) { axis0.setCascadeTargets(position,vel_ff,trk_ff); }
+    if (axis == 1) { axis1.setCascadeTargets(position,vel_ff,trk_ff); }
   }
 
-    if (command == "B") {                                               // Feedback request (Kinematics)
-    int p1 = received.indexOf(' ');                                     // Find position of first space
-    uint8_t power = received.substring(p1 + 1).toInt();                 // Substring 1 is braking power
-    mb.setBrakeDuty(power, cb.readVoltage());                           // Apply braking power
-  }
-
-  if (command == "F") {                                                 // Feedback request (Kinematics)
+  else if (command == "F") {                                            // ODrive ASCII Protocol: Feedback request (Kinematics)
     int p1 = received.indexOf(' ');                                     // Find position of first space
     int axis = received.substring(p1 + 1).toInt();                      // Substring 1 is axis number
     if (axis == 0) { response = axis0.getKinematicData(); }             // Apply command to the relevant axis
     if (axis == 1) { response = axis1.getKinematicData(); }
   }
 
-  if (command == "FMP") {                                               // Feedback Request (Motor Power)
+  else if (command == "B") {                                            // Braking power command
+    int p1 = received.indexOf(' ');                                     // Find position of first space
+    uint8_t power = received.substring(p1 + 1).toInt();                 // Substring 1 is braking power
+    mb.setBrakeDuty(power, cb.readVoltage());                           // Apply braking power
+  }
+
+  else if (command == "FMP") {                                          // Feedback Request (Motor Power)
     int p1 = received.indexOf(' ');                                     // Find position of first space
     int axis = received.substring(p1 + 1).toInt();                      // Substring 1 is axis number
     if (axis == 0) { response = axis0.getTelemetryData(); }             // Apply command to the relevant axis
-    if (axis == 1) { response = axis0.getTelemetryData(); }
+    if (axis == 1) { response = axis1.getTelemetryData(); }
   }
 
-  if (command == "FBP") {                                               // Feedback Request (Board Power)
+  else if (command == "FBP") {                                          // Feedback Request (Board Power)
     response += String(cb.readCurrent(), 2);                            // Get amperage
     response += "A ";                                                   // Add unit and space
     response += String(cb.readVoltage(), 2);                            // Get voltage
@@ -105,6 +115,25 @@ void processCommand(Stream& ser) {                                      // Comma
     response += String(cb.readVoltage()*cb.readCurrent(), 2);           // Calculate power
     response += "W";                                                    // Add unit
   }
+
+  else if (command == "FBP") {                                          // Feedback Request (Board Power)
+    response += String(cb.readCurrent(), 2);                            // Get amperage
+    response += "A ";                                                   // Add unit and space
+    response += String(cb.readVoltage(), 2);                            // Get voltage
+    response += "V ";                                                   // Add unit and space
+    response += String(cb.readVoltage()*cb.readCurrent(), 2);           // Calculate power
+    response += "W";                                                    // Add unit
+  }
+
+  else if (command == "FER") {                                          // Feedback Request (Errors)
+    uint64_t faults = mb.getFaults();                                   // Read fault registers
+    if (faults == 0) { response += "NONE"; }                            // If there are no faults, report none
+    else { for (int i = 63; i >= 0; i--) {                              // If there are faults, loop through bits...
+        response += (faults & (1ULL << i)) ? '1' : '0'; }               // ...and append them to the string
+    }
+  }
+
+  else { response = "Unknown command!"; }                               // Unknown command handling
 
   if (response.length() > 0) { ser.println(response); }                 // Print the response if there is one
 }
@@ -135,15 +164,23 @@ void dataUpdateTask(void *parameter) {                                  // Data 
 // Flow Control
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void setup() {  
+void setup() {
+  SimpleFOCDebug::enable();                                             // Print out SimpleFOC debug to USB CDC
   cb.begin();                                                           // Initialize control board
   mb.begin(cb.readVoltage(),cb.readVoltage());                          // Initialize motor board
   mb.enableDrives();                                                    // Start up drivers for configuration
-  axis0.setup();                                                        // Run servo axis setup
-  axis0.setLimits(0.5, 20);                                             // Servo axis: 0.5A and 20rad/s limit
-  axis0.tuneFilter(0.005, NOT_SET);                                     // Servo axis: 5ms filter time, no fixed sample time
-  axis0.tuneVelController(0.01,1,0,1000);                               // Servo axis: PID values and ramp rate for velocity controller
-  axis0.tunePosController(20, 0, 0, NOT_SET);                           // Servo axis: PID values and ramp rate for position controller
+  if (BLDC0 == true) {                                                  // If axis 0 is enabled:
+    axis0.setup();                                                      // - Run servo axis setup
+    axis0.setLimits(0.5, 20);                                           // - Servo axis: 0.5A and 20rad/s limit
+    axis0.tuneFilter(0.005, NOT_SET);                                   // - Servo axis: 5ms filter time, no fixed sample time
+    axis0.tuneVelController(0.01,1,0,1000);                             // - Servo axis: PID values and ramp rate for velocity controller
+    axis0.tunePosController(20, 0, 0, NOT_SET); }                       // - Servo axis: PID values and ramp rate for position controller
+  if (BLDC1 == true) {                                                  // If axis 1 is enabled:
+    axis1.setup();                                                      // - Run servo axis setup
+    axis1.setLimits(0.5, 20);                                           // - Servo axis: 0.5A and 20rad/s limit
+    axis1.tuneFilter(0.005, NOT_SET);                                   // - Servo axis: 5ms filter time, no fixed sample time
+    axis1.tuneVelController(0.01,1,0,1000);                             // - Servo axis: PID values and ramp rate for velocity controller
+    axis1.tunePosController(20, 0, 0, NOT_SET); }                       // - Servo axis: PID values and ramp rate for position controller
   mb.disableDrives();                                                   // Disable drivers until called to run
   add_repeating_timer_us(-1000, focTimerCB, nullptr, &focTimer);        // Initialize task: FOC (timer controlled)
   xTaskCreate(comRxTask,"COM RX",2048,nullptr,2,nullptr);               // RTOS Receive & Forward Task
