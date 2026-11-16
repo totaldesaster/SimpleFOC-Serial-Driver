@@ -3649,7 +3649,7 @@
 			(uuid "3c3b497d-5af7-4239-91aa-4f40293717dd")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0312")
 					(unit 1)
@@ -3771,7 +3771,7 @@
 			(uuid "82e34cf9-35f0-4726-a13c-0d22c622593d")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "Q301")
 					(unit 1)
@@ -3853,7 +3853,7 @@
 			(uuid "c5d83e07-3897-4a7b-b4de-e1a436e4b590")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0303")
 					(unit 1)
@@ -3938,7 +3938,7 @@
 			(uuid "c37a83bb-b08a-4890-8eae-d38eeb087aec")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C302")
 					(unit 1)
@@ -4060,7 +4060,7 @@
 			(uuid "60c411dc-e684-4951-84d0-38f2af243bb2")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "Q303")
 					(unit 1)
@@ -4260,7 +4260,7 @@
 			(uuid "b6284152-14da-4d7e-a44d-de05750a13db")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "U301")
 					(unit 1)
@@ -4342,7 +4342,7 @@
 			(uuid "df7c22e5-797e-4ce0-88bc-f97ec9e441bb")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0302")
 					(unit 1)
@@ -4428,7 +4428,7 @@
 			(uuid "6bc49762-22af-4f7f-a355-dc813c18d16c")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C306")
 					(unit 1)
@@ -4510,7 +4510,7 @@
 			(uuid "f0d8e4d0-5de7-4d55-9fed-c658ff57b0fb")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0306")
 					(unit 1)
@@ -4632,7 +4632,7 @@
 			(uuid "064bf96b-6e54-4bf2-9f3a-e5e15492332a")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "Q306")
 					(unit 1)
@@ -4718,7 +4718,7 @@
 			(uuid "e72faa89-3187-4739-95a7-136225163257")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R306")
 					(unit 1)
@@ -4800,7 +4800,7 @@
 			(uuid "e1f55211-1f03-48b8-a07b-4ee88eb764fb")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0316")
 					(unit 1)
@@ -4922,7 +4922,7 @@
 			(uuid "8ad6a484-78be-4fca-8a46-7526fe860a7b")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "Q302")
 					(unit 1)
@@ -5008,7 +5008,7 @@
 			(uuid "e91fc543-757e-406d-bef3-7eb2d4fef652")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C305")
 					(unit 1)
@@ -5094,7 +5094,7 @@
 			(uuid "9e449380-6984-4019-9274-decf16fc4929")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C303")
 					(unit 1)
@@ -5176,7 +5176,7 @@
 			(uuid "ca2db11f-221c-4144-b9a8-5f7381e1e281")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0313")
 					(unit 1)
@@ -5258,7 +5258,7 @@
 			(uuid "0c2bb2c2-78c0-4230-908c-0e769c06a56e")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0311")
 					(unit 1)
@@ -5344,7 +5344,7 @@
 			(uuid "656e814c-6089-47d4-8e14-f07db3265025")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R304")
 					(unit 1)
@@ -5430,7 +5430,7 @@
 			(uuid "9b2a48cd-05d6-42a5-808c-35dbeab3613f")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R303")
 					(unit 1)
@@ -5516,7 +5516,7 @@
 			(uuid "81884e0c-4398-47b8-9aa3-d82b8a9b013c")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C304")
 					(unit 1)
@@ -5598,7 +5598,7 @@
 			(uuid "e24f500f-3129-4dbf-874d-33df53d24c3a")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0308")
 					(unit 1)
@@ -5680,7 +5680,7 @@
 			(uuid "5f341010-54fe-4526-82f6-ff4e04069e8b")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0315")
 					(unit 1)
@@ -5766,7 +5766,7 @@
 			(uuid "6d44bd43-fde5-43ee-9cfb-26443dc65595")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R301")
 					(unit 1)
@@ -5852,7 +5852,7 @@
 			(uuid "0fa9839e-27d6-4043-b424-fd4b3145d2c5")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R309")
 					(unit 1)
@@ -5938,7 +5938,7 @@
 			(uuid "e5bea16f-fba8-4f86-a9ac-eacfe315ba16")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C307")
 					(unit 1)
@@ -6060,7 +6060,7 @@
 			(uuid "f170381c-611a-42f2-94b3-2dc22644696f")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "Q304")
 					(unit 1)
@@ -6182,7 +6182,7 @@
 			(uuid "21c19557-dd2b-48ec-a8b3-338fa3d6675d")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "Q305")
 					(unit 1)
@@ -6268,7 +6268,7 @@
 			(uuid "e91b4ba3-e50e-4241-8f53-b5f82934bc25")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R302")
 					(unit 1)
@@ -6350,7 +6350,7 @@
 			(uuid "79642020-b988-4290-814a-181305e718f8")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0317")
 					(unit 1)
@@ -6436,7 +6436,7 @@
 			(uuid "854a625d-82a4-4925-ac0f-a26658d8195d")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R305")
 					(unit 1)
@@ -6518,7 +6518,7 @@
 			(uuid "4249014f-a6b6-42ea-ab28-df58b0efe0cb")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0304")
 					(unit 1)
@@ -6600,7 +6600,7 @@
 			(uuid "e76edb27-5294-4168-aae7-3b9b59ddfda6")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0305")
 					(unit 1)
@@ -6689,7 +6689,7 @@
 			(uuid "9783acdd-f3a2-4ea2-a8ec-dfe6dc438491")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "J301")
 					(unit 1)
@@ -6775,7 +6775,7 @@
 			(uuid "3b6f461d-f399-4554-b21a-989e88821305")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "R307")
 					(unit 1)
@@ -6857,7 +6857,7 @@
 			(uuid "4c9ea9c3-1d1f-481f-92a0-7489e5b43f44")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0307")
 					(unit 1)
@@ -6942,7 +6942,7 @@
 			(uuid "f0e18ee5-3532-422f-a7ec-84cfb3a712f4")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C301")
 					(unit 1)
@@ -7027,7 +7027,7 @@
 			(uuid "27ebf55b-9d6a-4240-8eba-a8c74c53289f")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "C308")
 					(unit 1)
@@ -7109,7 +7109,7 @@
 			(uuid "3cea4f53-6dda-4851-8bbb-958c1bebb2ab")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0314")
 					(unit 1)
@@ -7191,7 +7191,7 @@
 			(uuid "314e06fa-8ffe-4e25-ae73-1b26117cf763")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0301")
 					(unit 1)
@@ -7273,7 +7273,7 @@
 			(uuid "93ec7bfa-e7a0-4a8d-9639-f718ce102d36")
 		)
 		(instances
-			(project "FOC_DRV8323"
+			(project "FOC_DualDRV8323"
 				(path "/09af15d7-4d4b-4eb7-a13d-9be8adaa905e/a0f5fafe-f807-4862-ad1c-097f77cb6ec4"
 					(reference "#PWR0309")
 					(unit 1)

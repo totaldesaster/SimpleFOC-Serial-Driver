@@ -82,7 +82,47 @@
           ""
         ],
         [
+          "courtyards_overlap|136745000|114755000|6592cbc6-4d8b-497e-ac6b-8e570e3fba5c|be98b44b-d529-4346-bcef-fa6997bc60b7",
+          ""
+        ],
+        [
+          "courtyards_overlap|170775000|114755000|4436d42c-160c-4e91-a132-6f6c6321fcd4|be98b44b-d529-4346-bcef-fa6997bc60b7",
+          ""
+        ],
+        [
           "courtyards_overlap|171895000|84615979|5836ceab-8b9d-4107-8b02-7c8f82542295|6932838e-7968-43dc-9ae5-f23b23e7cc07",
+          ""
+        ],
+        [
+          "net_conflict|136012500|103400000|8c87a751-a8c8-410b-a016-13fd9d278c10|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "net_conflict|164012500|103400000|93e0acbc-141f-4c93-9ca0-3d8570b22f82|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "pth_inside_courtyard|133800000|117000000|c68c955d-d0b6-4cd3-8299-6b9ad3afc67e|6592cbc6-4d8b-497e-ac6b-8e570e3fba5c",
+          ""
+        ],
+        [
+          "pth_inside_courtyard|137300000|117000000|d5295d59-cc0b-46b5-8cf5-ccfb72184057|6592cbc6-4d8b-497e-ac6b-8e570e3fba5c",
+          ""
+        ],
+        [
+          "pth_inside_courtyard|140800000|117000000|25d436b7-be6d-40d2-ab96-554999bda914|6592cbc6-4d8b-497e-ac6b-8e570e3fba5c",
+          ""
+        ],
+        [
+          "pth_inside_courtyard|159200000|117000000|1545a076-e5f1-4379-8c29-99662caabc02|4436d42c-160c-4e91-a132-6f6c6321fcd4",
+          ""
+        ],
+        [
+          "pth_inside_courtyard|162700000|117000000|3210f2b6-80ab-4c2c-b9f6-afd97bbde8d9|4436d42c-160c-4e91-a132-6f6c6321fcd4",
+          ""
+        ],
+        [
+          "pth_inside_courtyard|166200000|117000000|016e88e7-e34d-4d1c-a3b1-36b0f4839073|4436d42c-160c-4e91-a132-6f6c6321fcd4",
           ""
         ],
         [
@@ -542,7 +582,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "FOC_DRV8323.kicad_pro",
+    "filename": "FOC_DualDRV8323.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -697,18 +737,18 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "FOC_DRV8323.kicad_sch",
-        "name": "Root",
+        "filename": "FOC_DualDRV8323.kicad_sch",
+        "name": "FOC_DualDRV8323",
         "uuid": "09af15d7-4d4b-4eb7-a13d-9be8adaa905e"
       }
     ],
-    "used_designators": "R107-110,R201,R206-211,R301,R306-311,#PWR109,#PWR203,#PWR205,#PWR207,#PWR303,#PWR305,#PWR307,JP101-103",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [
     [
       "09af15d7-4d4b-4eb7-a13d-9be8adaa905e",
-      "Root"
+      "FOC_DualDRV8323"
     ],
     [
       "e376de62-4d1f-4138-843c-c6aca5f86eea",
